@@ -21,7 +21,7 @@ Below are the ERD for the data used for this assignment (EmployeeDB.png):
 
 Schema used: cf. **schema.sql**
 
-All queries used: cf. **queries_Challenge.sql**
+All queries used: cf. **queries_Challenge.sql** in [Queries](Queries/) folder
 
 ### Steps followed
 
