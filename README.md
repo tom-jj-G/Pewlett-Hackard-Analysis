@@ -11,6 +11,7 @@
         - One showing number of retiring
         - One showing number of employees with each title
         - One showing a list of current employees born between Jan. 1, 1952 and Dec. 31, 1955.
+	
     New tables are exported as CSVs. 
 
 - Technical Analysis Deliverable 2: Mentorship Eligibility.
@@ -34,14 +35,14 @@ In order to retrieved the list of retiring employee by title, we used a partitio
 - employees.hire_date BETWEEN '1985-01-01' AND '1988-12-31': employees must have been hired between 1985 and 1988 
 - dept_emp.to_date = '9999-01-01': employees must still work for the company as of today 
 
-Here is the data retrieved and store in a new table untitled 'ret_emp_by_title':
+Below are the data retrieved and store in a new table untitled 'ret_emp_by_title':
 - Employee number (ascending)
 - First and last name
 - Most recent title/position in the company
 - Beginning date of the title/position
 - Salary
 
-Below is the query used (starting on line 29 in the **queries_Challenge.sql** file).
+Below is the query used (starting on line 29 in the **queries_Challenge.sql** file in [Queries](Queries/) folder).
 
 ```sql
 SELECT  emp_no,
@@ -77,7 +78,7 @@ SELECT COUNT(DISTINCT re.emp_no)
 FROM ret_emp_by_title as re;
 ```
 
-    => returning the total number of distinct employee number
+    => returning the total number of distinct employee number in our newly created table 'ret_emp_by_title'.
 
 ```sql
 SELECT COUNT(*)
@@ -89,7 +90,8 @@ FROM ret_emp_by_title;
 As the employee number is unique for each employee, both total should be equal.
 
 ##### 1.2: Number of titles retiring
-To quantify the number of titles which are impacted, we just count the disctinct values of title stored in our newly created table 'ret_emp_by_title'. The result will be store in a new table named 'ret_number_title'
+To quantify the number of titles which are impacted, we just count the disctinct values of title stored in our newly created table 'ret_emp_by_title'. The result will be store in a new table named 'ret_number_title'.
+
 Below is the query used (starting on line 65 in the **queries_Challenge.sql** file in [Queries](Queries/) folder).
 
 ```sql
@@ -99,7 +101,8 @@ FROM ret_emp_by_title AS ret;
 ```
 
 ##### 1.3: Number of retiring employees for each title
-To summarize the results and have the total number of employees who is going to retire for each ttle, we created a third table untitled 'ret_num_emp_by_title'.
+To summarize the results and have the total number of employees who is going to retire for each title, we created a third table untitled 'ret_num_emp_by_title'.
+
 Below is the query used (starting on line 71 in the **queries_Challenge.sql** file in [Queries](Queries/) folder).
 
 ```sql
@@ -113,6 +116,7 @@ ORDER BY COUNT DESC;
 
 #### Deliverable 2: Mentorship Eligibility
 To fullfil this goal, we used a classic query with tables join to build a new table named 'mentorship_emp'.
+
 Below is the query used (starting on line 81 in the **queries_Challenge.sql** file in [Queries](Queries/) folder).
 
 ```sql
@@ -138,14 +142,14 @@ All new tables created ('ret_emp_by_title','ret_number_title','ret_num_emp_by_ti
 First, we noticed that 7 titles/positions are affected by the future retired employees:
 ![Image_1.2](Images/Image_1.2.png)
 
-Below is the reparition of the 33,118 employees which are going to be retired:
+Below is the reparition of the 33,118 employees who are going to be retired by their title/position:
 ![Image_1.3](Images/Image_1.3.png)
 
 We noticed that almost 80% of these employees are at a senior position, so potentially with high skills and experience.
 Only two department managers are going to be retired on the 9 total departments.
 
-Finally, we had the list of employees who is going to retired.
-Note that control "queries" mentioned before (Deliverable 1, part 1.1) validated the number of total employees impacted: 33,188.
+Finally, we had the list of employees who are going to retire.
+Note that control "queries" mentioned before in this report (Deliverable 1, part 1.1) validated the number of total employees impacted: 33,188.
 ![Image_1.1](Images/Image_1.3.png)
 
 Last info, our last newly created table gave us the list of employees eligibible for the mentorship program. In total, 1,128 employees are eligible.
@@ -153,4 +157,4 @@ Last info, our last newly created table gave us the list of employees eligibible
 
 ### Recommendations for further analysis
 
-With the points raised during the lessons (only 5 department have a current or had a manager, salary values that seem to be too low), the first think to do would be to ask if our data are accurate and exhaustive. Providing they are, it would be helpful to categorize the employees eligible for mentorship by title/position. We will, thus, know how many potential mentors are available for each title/position. We could then sort the mentors by experience length (and/or retain only their last title/position) to outline the potential more knowledgeable mentors for each title/position and focus on them first to try to enroll them in the mentorship program.
+With the points raised during the lessons (only 5 departments with a current/past manager, salary values that seem to be too low), the first think to do would be to ask if our data are accurate and exhaustive. Providing they are, it would be helpful to categorize the employees eligible for mentorship by title/position. We will, thus, know how many potential mentors are available for each title/position. We could then sort the mentors by experience length (and/or retain only their last title/position) to outline the potential most knowledgeable mentors for each title/position and focus on them first to try to enroll them in the mentorship program.
