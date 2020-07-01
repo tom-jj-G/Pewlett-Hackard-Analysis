@@ -16,10 +16,11 @@
 - Technical Analysis Deliverable 2: Mentorship Eligibility.
     - A table containing employees who are eligible for the mentorship program and the CSV containing the data 
 
-Below are the ERD for the data used for this assignment:
+Below are the ERD for the data used for this assignment (EmployeeDB.png):
 ![EmployeeDB.png](EmployeeDB.png)
 
 Schema used: cf. **schema.sql**
+
 All queries used: cf. **queries_Challenge.sql**
 
 ### Steps followed
@@ -28,7 +29,8 @@ All queries used: cf. **queries_Challenge.sql**
 
 ##### 1.1: List of current employees who are about to retire
 In order to retrieved the list of retiring employee by title, we used a partitioning query to remove duplicate employee and to keep only their most recent title.
-NB: in addition of the condition provided with the challenge (employee must be born between 1952 and 1955), we kept the conditions below that we used during the lessons to retain the employees eligible for retire:
+
+**NB**: in addition of the condition provided with the challenge (employee must be born between 1952 and 1955), we kept the conditions below that we used during the lessons to retain the employees eligible for retire:
 - employees.hire_date BETWEEN '1985-01-01' AND '1988-12-31': employees must have been hired between 1985 and 1988 
 - dept_emp.to_date = '9999-01-01': employees must still work for the company as of today 
 
@@ -40,7 +42,8 @@ Here is the data retrieved and store in a new table untitled 'ret_emp_by_title':
 - Salary
 
 Below is the query used (starting on line 29 in the **queries_Challenge.sql** file).
----
+
+```sql
 SELECT  emp_no,
 		first_name,
         last_name,
@@ -65,19 +68,22 @@ FROM
         AND (e.hire_date BETWEEN '1985-01-01' AND '1988-12-31')
         AND (de.to_date = '9999-01-01')) tmp WHERE rn=1
 ORDER BY emp_no;
----
+```
 
 In order to check if there is no duplicate in the results, we ran the two queries below (starting on line 56 in the **queries_Challenge.sql** file in [Queries](Queries/) folder):
----
+
+```sql
 SELECT COUNT(DISTINCT re.emp_no)
 FROM ret_emp_by_title as re;
----
+```
+
     => returning the total number of distinct employee number
 
----
+```sql
 SELECT COUNT(*)
 FROM ret_emp_by_title; 
----
+```
+
     => returning the total number of records in our newly created table 'ret_emp_by_title'.
 
 As the employee number is unique for each employee, both total should be equal.
@@ -85,28 +91,31 @@ As the employee number is unique for each employee, both total should be equal.
 ##### 1.2: Number of titles retiring
 To quantify the number of titles which are impacted, we just count the disctinct values of title stored in our newly created table 'ret_emp_by_title'. The result will be store in a new table named 'ret_number_title'
 Below is the query used (starting on line 65 in the **queries_Challenge.sql** file in [Queries](Queries/) folder).
----
+
+```sql
 SELECT COUNT(DISTINCT ret.title)
 INTO ret_number_title
 FROM ret_emp_by_title AS ret;
----
+```
 
 ##### 1.3: Number of retiring employees for each title
 To summarize the results and have the total number of employees who is going to retire for each ttle, we created a third table untitled 'ret_num_emp_by_title'.
 Below is the query used (starting on line 71 in the **queries_Challenge.sql** file in [Queries](Queries/) folder).
----
+
+```sql
 SELECT COUNT(DISTINCT ret.emp_no), ret.title
 INTO ret_num_emp_by_title
 FROM ret_emp_by_title AS ret
 GROUP BY ret.title
 ORDER BY COUNT DESC;
----
+```
 
 
 #### Deliverable 2: Mentorship Eligibility
 To fullfil this goal, we used a classic query with tables join to build a new table named 'mentorship_emp'.
 Below is the query used (starting on line 81 in the **queries_Challenge.sql** file in [Queries](Queries/) folder).
----
+
+```sql
 SELECT e.emp_no,
 	e.first_name,
 	e.last_name,
@@ -120,7 +129,7 @@ INNER JOIN dept_emp AS de ON (e.emp_no = de.emp_no)
 WHERE (e.birth_date BETWEEN '1965-01-01' AND '1965-12-31')
 	AND (e.hire_date BETWEEN '1985-01-01' AND '1988-12-31')
 	AND (de.to_date = '9999-01-01');
----
+```
 
 ### Results of analysis
 
@@ -135,11 +144,12 @@ Below is the reparition of the 33,118 employees which are going to be retired:
 We noticed that almost 80% of these employees are at a senior position, so potentially with high skills and experience.
 Only two department managers are going to be retired on the 9 total departments.
 
-Finally, we had the list of employees who is going to retired. Not that control "queries" mentioned before (Deliverable 1, part 1.1) validated the number of total employees impacted: 33,188.
+Finally, we had the list of employees who is going to retired.
+Note that control "queries" mentioned before (Deliverable 1, part 1.1) validated the number of total employees impacted: 33,188.
 ![Image_1.1](Images/Image_1.3.png)
 
 Last info, our last newly created table gave us the list of employees eligibible for the mentorship program. In total, 1,128 employees are eligible.
-![Image_2](Images/Image_2png)
+![Image_2](Images/Image_2.png)
 
 ### Recommendations for further analysis
 
